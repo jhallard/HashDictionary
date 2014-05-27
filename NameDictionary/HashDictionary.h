@@ -1,5 +1,5 @@
 #ifndef HASH_DICTIONARY_H
-#define HASH_DICTIOINARY_H
+#define HASH_DICTIONARY_H
 
 #include "DictionaryNode.h"
 
@@ -7,16 +7,20 @@ template <class keyType, class itemType>
 class HashDictionary
 {
 private:
-	DictionaryNode * dictionary;
-	int dictionarySize, numberOfEntries;
-
-	bool hashEntry(DictionaryNode);
+	static const int dictionarySize = 100;
+	DictionaryNode<keyType, itemType> * dictionary[dictionarySize];
+	int numberOfEntries;
+	int hashEntry(keyType);
 
 public:
+
+	explicit HashDictionary();
 
 	bool isEmpty();
 
 	int getNumberOfItems();
+
+	int getDictionarySize();
 
 	bool add(keyType, itemType);
 
@@ -31,5 +35,6 @@ public:
 
 };
 
+#include "HashDictionary.cpp"
 
 #endif

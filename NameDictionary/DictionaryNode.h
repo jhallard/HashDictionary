@@ -7,10 +7,11 @@ class DictionaryNode
 private:
 	keyType key;
 	itemType item;
-	DictionaryNode * next;
+	DictionaryNode<keyType, itemType> * next;
 
 public:
 	DictionaryNode(keyType, itemType);
+	DictionaryNode();
 
 	void setKey(keyType);
 	keyType getKey();
@@ -18,9 +19,11 @@ public:
 	void setItem(itemType);
 	itemType getItem();
 
-	DictionaryNode * getNext();
-	void setNext(DictionaryNode *);
+	DictionaryNode<keyType, itemType> * getNext();
+	void setNext(DictionaryNode<keyType, itemType> *);
 
 };
+
+#include "DictionaryNode.cpp"
 
 #endif
