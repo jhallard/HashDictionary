@@ -1,3 +1,10 @@
+/*  
+*	@Author John H Allard. Written for CSIS 212 Advanced Data Structures at GCC, May 27th, 2014.
+*	HashDictionary.cpp - Implementation of class HashDictionary. This class is a dictionary that uses hashing with chaining to store data.
+*	It is a relatively trivial implementation but it is fully template compatible, just tell it what type the keys are and what type the items are and you're good to go
+*	One thing that is kind of bad and needs to eb fixed is that I couldn't get the program to let me make a constructor that takes in just one int to be the size of the 
+*	dictionary, so I had to declare a constant to do this.
+*/
 #ifndef HASH_DICTIONARY_CPP
 #define HASH_DICTIONARY_CPP
 
@@ -69,10 +76,35 @@ int HashDictionary<keyType, itemType>::hashEntry(keyType key)
 
 
 template <class keyType, class itemType>
-bool  HashDictionary<keyType, itemType>::remove(keyType)
+bool  HashDictionary<keyType, itemType>::remove(keyType key)
 {
+	int index = hashEntry(key);
+	DictionaryNode<keyType, itemType> * nodeptr = nullptr;
+	nodeptr = dictionary[index];
 
-	return true;
+	if(nodeptr == nullptr)
+		return false;
+	else if(key == nodeptr->getKey())
+	{
+		dictionary[index] = dictionary[index]->getNext();
+		this->numberOfEntries--;
+		return true;
+	}
+	else
+	{
+		while(nodeptr->getNext() != nullptr)
+		{
+			if(nodeptr->getNext()->getKey() == key)
+			{
+				nodeptr = nodeptr->getNext()->getNext();
+				this->numberOfEntries--;
+				return true;
+			}
+			nodeptr = nodeptr->getNext();
+		}
+		return false;
+	}
+	return false;
 }
 
 template <class keyType, class itemType>
@@ -110,7 +142,13 @@ itemType HashDictionary<keyType, itemType>::getItem(keyType)
 template <class keyType, class itemType>
 void HashDictionary<keyType, itemType>::traverse(void visit(itemType&))
 {
-
+	for(int i = 0; i < this->dictionarySize; i++)
+	{
+		if(this->dictionary[i] != nullptr)
+		{
+			visit(dictionary[i]->getItem());
+		}
+	}
 }
 
 #endif
