@@ -133,14 +133,10 @@ bool fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
 {
     ifstream infile;
 
-	try
-	{
-        infile.open(filename);
-	}
-	catch(exception e)
-	{
-	    return false;
-	}
+	infile.open(filename);
+
+	if(!infile)
+		return false;
 
     std::vector<std::string> names;
     while(!infile.eof()) // To get you all the lines.
