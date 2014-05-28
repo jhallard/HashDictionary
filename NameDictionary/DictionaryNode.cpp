@@ -1,8 +1,8 @@
 /*
-*	@author John H Allard. May 27, 2014. This is the implementation of the DictionaryNode class, defined of course in DictionaryNode.h
-*	This class represents an entry on a hash table that uses chaining to avoid collisions. The reason it has node in the name is because
-*	each object of this class also acts like a node in a linked list that links to a chain of other DictionaryNodes behind it in the hash table.
-*	ONLINE REPOSITORY http://github.com/jhallard/HashDictionary
+*    @author John H Allard. May 27, 2014. This is the implementation of the DictionaryNode class, defined of course in DictionaryNode.h
+*    This class represents an entry on a hash table that uses chaining to avoid collisions. The reason it has node in the name is because
+*    each object of this class also acts like a node in a linked list that links to a chain of other DictionaryNodes behind it in the hash table.
+*    ONLINE REPOSITORY http://github.com/jhallard/HashDictionary
 */
 
 #ifndef DICTIONARY_NODE_CPP

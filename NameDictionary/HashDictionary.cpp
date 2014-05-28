@@ -13,13 +13,13 @@
 
 // @Constructor
 // @param - Size of the hash table in slots, more than this number of items can be added but it means that there
-//			will definitely be collisions occuring. This constructor dynamically allocated the map using the @param size.
+//            will definitely be collisions occuring. This constructor dynamically allocated the map using the @param size.
 template <class keyType, class itemType>
 HashDictionary<keyType, itemType>::HashDictionary(int size)
 {
     this->dictionarySize = size;
     this->numberOfEntries = 0;
-	this->dictionary = new DictionaryNode<keyType, itemType>*[dictionarySize];
+    this->dictionary = new DictionaryNode<keyType, itemType>*[dictionarySize];
     for(int i = 0; i < dictionarySize; i++)
     {
         this->dictionary[i] = nullptr;
@@ -31,7 +31,7 @@ HashDictionary<keyType, itemType>::HashDictionary(int size)
 template <class keyType, class itemType>
 HashDictionary<keyType, itemType>::~HashDictionary()
 {
-	delete [] dictionary;
+    delete [] dictionary;
 }
 
 // Returns true if the dictionary is empty of entries
@@ -94,9 +94,9 @@ int HashDictionary<keyType, itemType>::hashEntry(keyType key)
 {
     std::hash<keyType> hash_fn;
     std::size_t str_hash = hash_fn(key);
-	str_hash = str_hash%this->dictionarySize;
+    str_hash = str_hash%this->dictionarySize;
 
-	return str_hash;
+    return str_hash;
 }
 
 // Remove an item from the dictionary at index @Param key. 
@@ -182,7 +182,7 @@ itemType HashDictionary<keyType, itemType>::getItem(keyType key)
     while(nodeptr->getNext() != nullptr)
     {
         if(nodeptr->getKey() == key)
-			return nodeptr->getItem();
+            return nodeptr->getItem();
 
         nodeptr = nodeptr->getNext();
     }
@@ -230,8 +230,8 @@ void HashDictionary<keyType, itemType>::traverse(void visit(DictionaryNode<keyTy
 template <class keyType, class itemType>
 std::vector<DictionaryNode<keyType, itemType>> HashDictionary<keyType, itemType>::toVector()
 {
-	DictionaryNode<keyType, itemType> * nodeptr = nullptr;
-	std::vector<DictionaryNode<keyType, itemType>> returnVector;
+    DictionaryNode<keyType, itemType> * nodeptr = nullptr;
+    std::vector<DictionaryNode<keyType, itemType>> returnVector;
 
     nodeptr = dictionary[0];
 
@@ -240,17 +240,17 @@ std::vector<DictionaryNode<keyType, itemType>> HashDictionary<keyType, itemType>
         if(dictionary[i] != nullptr)
         {
             nodeptr = dictionary[i];
-			returnVector.push_back(*nodeptr);
+            returnVector.push_back(*nodeptr);
 
             while(nodeptr->getNext() != nullptr)
             {
                 nodeptr = nodeptr->getNext();
-				returnVector.push_back(*nodeptr);
+                returnVector.push_back(*nodeptr);
             }
         }// end if
     }// end forloop
 
-	return returnVector;
+    return returnVector;
 }
 
 #endif

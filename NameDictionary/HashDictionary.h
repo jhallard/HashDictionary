@@ -18,7 +18,7 @@ class HashDictionary
 private:
     int dictionarySize; // max size of the dictionary slots, you can have more elements than this but they will nessearily have to be chained
     
-	DictionaryNode<keyType, itemType> ** dictionary;               // our dictionary, an array of pointers to dictionary nodes. The array slots are the
+    DictionaryNode<keyType, itemType> ** dictionary;               // our dictionary, an array of pointers to dictionary nodes. The array slots are the
                                                                    // slots of our dictionary, and the pointers will point to the next item in the list if
                                                                    // there is a collision between entries
 
@@ -30,8 +30,8 @@ public:
     // constructor, takes one argument that determines the number of slots of the dictionary
      HashDictionary(int); 
 
-	 // Destructor, must delete the dynamically allocated hash map memory.
-	 ~HashDictionary();
+     // Destructor, must delete the dynamically allocated hash map memory.
+     ~HashDictionary();
     // returns true if the dictionary has no entries
     bool isEmpty();
 
@@ -64,9 +64,9 @@ public:
     void traverse(void visit(DictionaryNode<keyType, itemType>&));
 
 
-	//returns a vector of the entries of the dictionary in order based on their key. If the keys map the the same index through std::Hash, then they will be 
-	// in relative order of how they were inserted.
-	std::vector<DictionaryNode<keyType, itemType>> toVector();
+    //returns a vector of the entries of the dictionary in order based on their key. If the keys map the the same index through std::Hash, then they will be 
+    // in relative order of how they were inserted.
+    std::vector<DictionaryNode<keyType, itemType>> toVector();
 
 
 };
