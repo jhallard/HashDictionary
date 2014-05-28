@@ -11,6 +11,9 @@
 
 #include "HashDictionary.h"
 
+// @Constructor
+// @param - Size of the hash table in slots, more than this number of items can be added but it means that there
+//			will definitely be collisions occuring. This constructor dynamically allocated the map using the @param size.
 template <class keyType, class itemType>
 HashDictionary<keyType, itemType>::HashDictionary(int size)
 {
@@ -23,25 +26,38 @@ HashDictionary<keyType, itemType>::HashDictionary(int size)
     }
 }
 
+// @Destructor
+// Clean up the dynamically allocated memory in @field dictionary;
+template <class keyType, class itemType>
+HashDictionary<keyType, itemType>::~HashDictionary()
+{
+	delete [] dictionary;
+}
+
+// Returns true if the dictionary is empty of entries
 template <class keyType, class itemType>
 bool HashDictionary<keyType, itemType>::isEmpty()
 {
     return(!this->numberOfEntries);
 }
 
+// returns the size of the dictionary, as in the number of slots available, NOT the number of items the dictionary has
 template <class keyType, class itemType>
 int HashDictionary<keyType, itemType>::getDictionarySize()
 {
     return this->dictionarySize;
 }
 
+// This gets the number of entries inside the dictionary at the time the function is called
 template <class keyType, class itemType>
 int HashDictionary<keyType, itemType>::getNumberOfItems()
 {
     return this->numberOfEntries;
 }
 
-
+// Add an entry into the hashmap. 
+// @Param key - the key of the entry, to be hashed to determine the index.
+// @Param item - the item (value) to be inserted into the hashmap at the hashed index
 template <class keyType, class itemType>
 bool HashDictionary<keyType, itemType>::add(keyType key, itemType item)
 {
@@ -70,13 +86,22 @@ bool HashDictionary<keyType, itemType>::add(keyType key, itemType item)
     return true;
 }
 
+// Hash the key to form an index based on the size of the dictionary (determine by @field dictionarySize)
+// We use the std::Hash<int> function to hash it to an interger and then modulo by the size of the dictionary.
+// @Param key - the key to be hashed, can be of any type that the std::Hash function accepts.
 template <class keyType, class itemType>
 int HashDictionary<keyType, itemType>::hashEntry(keyType key)
 {
-    return (key%15)*(key%1213)%this->dictionarySize;
+    std::hash<keyType> hash_fn;
+    std::size_t str_hash = hash_fn(key);
+	str_hash = str_hash%this->dictionarySize;
+
+	return str_hash;
 }
 
-
+// Remove an item from the dictionary at index @Param key. 
+// Pass in the key to try and identify where the item would be, if we reach a nullptr then we know
+// we have not found the item in question. Returns true if it found and removed the item and false otherwise
 template <class keyType, class itemType>
 bool  HashDictionary<keyType, itemType>::remove(keyType key)
 {
@@ -109,6 +134,9 @@ bool  HashDictionary<keyType, itemType>::remove(keyType key)
     return false;
 }
 
+// Query the hashmap to see if it contains the item. Call this function before you call getItem() so
+// you can make sure that the item you are looking for is in the hashmap before trying to pull it out.
+// Returns true if it can find the item and false otherwise.
 template <class keyType, class itemType>
 bool HashDictionary<keyType, itemType>::contains(keyType key)
 {
@@ -135,12 +163,36 @@ bool HashDictionary<keyType, itemType>::contains(keyType key)
     
 }
 
+// This function throws std::logic_error if an item with key @Param key does not exist.
+// Otherwise it returns the value of the item associated with @Param key.
 template <class keyType, class itemType>
-itemType HashDictionary<keyType, itemType>::getItem(keyType)
+itemType HashDictionary<keyType, itemType>::getItem(keyType key)
 {
-    return itemType();
+    int index = hashEntry(key);
+
+    DictionaryNode<keyType, itemType> * nodeptr = nullptr;
+    nodeptr = this->dictionary[index];
+
+    if(nodeptr == nullptr)
+        throw std::logic_error("Item Does not Exist");
+
+    if(key == nodeptr->getKey())
+        return nodeptr->getItem();
+
+    while(nodeptr->getNext() != nullptr)
+    {
+        if(nodeptr->getKey() == key)
+			return nodeptr->getItem();
+
+        nodeptr = nodeptr->getNext();
+    }
+
+    throw std::logic_error("Item Does not Exist");
 }
 
+// traverse the map in order (ascending the slots of the hashmap and if a slot has chaining, then traverse the chain in order before
+// moving on to the next slot. On each slot it calls the @Param visit() function, which is a function that the user defines to either print out the map
+// or store the argument in different container.
 template <class keyType, class itemType>
 void HashDictionary<keyType, itemType>::traverse(void visit(DictionaryNode<keyType, itemType> &))
 {

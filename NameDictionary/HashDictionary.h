@@ -10,18 +10,20 @@
 #include "DictionaryNode.h"
 #include <vector>
 #include <iostream>
+#include <functional> // used for std::hash function
 
 template <class keyType, class itemType> 
 class HashDictionary
 {
 private:
     int dictionarySize; // max size of the dictionary slots, you can have more elements than this but they will nessearily have to be chained
-    DictionaryNode<keyType, itemType> ** dictionary;//[dictionarySize]; // our dictionary, an array of pointers to dictionary nodes. The array slots are the
+    
+	DictionaryNode<keyType, itemType> ** dictionary;               // our dictionary, an array of pointers to dictionary nodes. The array slots are the
                                                                     // slots of our dictionary, and the pointers will point to the next item in the list if
                                                                     // there is a collision between entries
 
     int numberOfEntries;    // current number of entries in our dictionary
-    int hashEntry(keyType); // Hash utility function, takes a key and maps it via some wierd function to a number in {0, dictionarySize}
+    int hashEntry(keyType); // Hash utility function, takes a key and maps it via std::hash<int> to an index between {0, dictionarySize}
 
 public:
 
@@ -29,6 +31,8 @@ public:
     // errors involving the copy constructor. works for now but it needs to be fixed
      HashDictionary(int); 
 
+	 // Destructor, must delete the dynamically allocated hash map memory.
+	 ~HashDictionary();
     // returns true if the dictionary has no entries
     bool isEmpty();
 
