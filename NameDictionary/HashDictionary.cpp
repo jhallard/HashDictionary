@@ -12,10 +12,11 @@
 #include "HashDictionary.h"
 
 template <class keyType, class itemType>
-HashDictionary<keyType, itemType>::HashDictionary()
+HashDictionary<keyType, itemType>::HashDictionary(int size)
 {
-    //this->dictionarySize = size;
+    this->dictionarySize = size;
     this->numberOfEntries = 0;
+	this->dictionary = new DictionaryNode<keyType, itemType>*[dictionarySize];
     for(int i = 0; i < dictionarySize; i++)
     {
         this->dictionary[i] = nullptr;

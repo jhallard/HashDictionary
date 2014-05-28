@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <exception>
 
 #include "HashDictionary.h"
 #include "DictionaryNode.h"
@@ -8,32 +9,34 @@
 using namespace std;
 
 template <class keyType, class itemType>
-void visit(DictionaryNode<keyType, itemType> & name)
-{
-    cout << "  Age : " << name.getKey() << "    --   Name : " << name.getItem() << "\n\n";
-}
+void visit(DictionaryNode<keyType, itemType> & name);
+
 
 template <class keyType, class itemType>
-void fileToDictionary(HashDictionary<keyType, itemType> &, string filename);
+bool fileToDictionary(HashDictionary<keyType, itemType> &, string filename);
 
 int main()
 {
-    //HashDictionary<int, char> * dic = new HashDictionary<int, char>();
-    HashDictionary<int, string> dict;
+    HashDictionary<int, string> dict(53);
 
     int menuop = -1;
 
     while(menuop != 0)
     {
         cout << "Please Choose One of the Following Options\n\n";
-        cout << "1.) print hash table\n";
-        cout << "2.) retrieve hash item\n";
-        cout << "3.) delete item\n";
-        cout << "4.) read names from file\n";
-        cout << "0.) quit\n\n";
+        cout << "1.) Print hash table\n";
+        cout << "2.) Retrieve hash item\n";
+        cout << "3.) Delete item\n";
+        cout << "4.) Read names from file\n";
+		cout << "5.) Add a name to the file\n";
+		cout << "6.) Save dictionary to file\n";
+        cout << "0.) Quit\n\n";
 
         cin >> menuop;
         int key = 0;
+		int age = 0;
+		string name;
+		cin.ignore();
         switch(menuop)
         {
             case(1):
@@ -56,6 +59,8 @@ int main()
                 }
                 else
                     cout << "\n\nItem not found in dictionary\n\n";
+				system("pause");
+				system("cls");
             break;
 
 
@@ -68,29 +73,56 @@ int main()
                 }
                 else
                     cout << "\n\nItem not found in dictionary\n\n";
+				system("pause");
+				system("cls");
             break;
 
 
             case(4):
-                string name;
                 cout << "Please enter the name of the file to read from\n";
                 cin >> name;
-                fileToDictionary(dict, name);
+				if(fileToDictionary(dict, name))
+					cout << "\n\n File has been located\n\n";
+				else
+					cout << "\n\n Could not find file\n\n";
+
+				system("pause");
+				system("cls");
+            break;
+
+			case(5):
+                cout << "Please enter the name to add to the dictionary\n";
+                getline(cin,name);
+				cout << "Please enter the age that corresponds to that person\n";
+                cin >> age;
+				
+				dict.add(age, name);
+
+				cout << "\n\n\n  (" << name << ", " << age << ") has been added.\n\n\n";
+				system("pause");
+				system("cls");
             break;
         }// end switch
 
     }// end main menu while loop
     
-
-    system("pause");
 }
 
 
 template <class keyType, class itemType>
-void fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
+bool fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
 {
     ifstream infile;
-    infile.open(filename);
+
+	try
+	{
+        infile.open(filename);
+	}
+	catch(exception e)
+	{
+	    return false;
+	}
+
     std::vector<std::string> names;
     while(!infile.eof()) // To get you all the lines.
     {
@@ -98,7 +130,7 @@ void fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
         char age[3];
         int numage = 0;
         int index = 0;
-        getline(infile,str); // Saves the line in STRING.
+        getline(infile,str); 
 
         while(index < 3 && str[index] != ' ')
         {
@@ -117,8 +149,15 @@ void fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
         dic.add(numage, str);
     }
     infile.close();
+	return true;
 
 }
 
+
+template <class keyType, class itemType>
+void visit(DictionaryNode<keyType, itemType> & name)
+{
+    cout << "  Age : " << name.getKey() << "    --   Name : " << name.getItem() << "\n\n";
+}
 
 

@@ -15,8 +15,8 @@ template <class keyType, class itemType>
 class HashDictionary
 {
 private:
-    static const int dictionarySize = 13; // max size of the dictionary slots, you can have more elements than this but they will nessearily have to be chained
-    DictionaryNode<keyType, itemType> * dictionary[dictionarySize]; // our dictionary, an array of pointers to dictionary nodes. The array slots are the
+    int dictionarySize; // max size of the dictionary slots, you can have more elements than this but they will nessearily have to be chained
+    DictionaryNode<keyType, itemType> ** dictionary;//[dictionarySize]; // our dictionary, an array of pointers to dictionary nodes. The array slots are the
                                                                     // slots of our dictionary, and the pointers will point to the next item in the list if
                                                                     // there is a collision between entries
 
@@ -27,7 +27,7 @@ public:
 
     // constructor, ideally would have one argument, the size of the dictionary, but was getting
     // errors involving the copy constructor. works for now but it needs to be fixed
-    explicit HashDictionary(); 
+     HashDictionary(int); 
 
     // returns true if the dictionary has no entries
     bool isEmpty();

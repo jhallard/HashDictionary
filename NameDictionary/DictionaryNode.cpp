@@ -12,14 +12,6 @@ DictionaryNode<keyType, itemType>::DictionaryNode(keyType key, itemType item)
 }
 
 template <class keyType, class itemType>
-DictionaryNode<keyType, itemType>::DictionaryNode()
-{
-    this->key = 0;
-    this->item = 0;
-    this->next = nullptr;
-}
-
-template <class keyType, class itemType>
 void DictionaryNode<keyType, itemType>::setKey(keyType key)
 {
     this->key = key;
