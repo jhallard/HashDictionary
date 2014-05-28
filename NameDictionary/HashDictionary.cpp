@@ -57,12 +57,11 @@ bool HashDictionary<keyType, itemType>::add(keyType key, itemType item)
 	}
 	else
 	{
-		ptr = ptr->getNext();
-		while(ptr != nullptr)
+		while(ptr->getNext() != nullptr)
 		{
 			ptr = ptr->getNext();
 		}
-		ptr = newNode;
+		ptr->setNext(newNode);
 		this->numberOfEntries++;
 	}
 
