@@ -14,7 +14,7 @@ template <class keyType, class itemType>
 class HashDictionary
 {
 private:
-	static const int dictionarySize = 100;
+	static const int dictionarySize = 3;
 	DictionaryNode<keyType, itemType> * dictionary[dictionarySize];
 	int numberOfEntries;
 	int hashEntry(keyType);
@@ -37,7 +37,7 @@ public:
 
 	itemType getItem(keyType);
 
-	void traverse(void visit(itemType&));
+	void traverse(void visit(DictionaryNode<keyType, itemType>&));
 
 
 };

@@ -57,7 +57,8 @@ bool HashDictionary<keyType, itemType>::add(keyType key, itemType item)
 	}
 	else
 	{
-		while(ptr->getNext() != nullptr)
+		ptr = ptr->getNext();
+		while(ptr != nullptr)
 		{
 			ptr = ptr->getNext();
 		}
@@ -140,15 +141,37 @@ itemType HashDictionary<keyType, itemType>::getItem(keyType)
 }
 
 template <class keyType, class itemType>
-void HashDictionary<keyType, itemType>::traverse(void visit(itemType&))
+void HashDictionary<keyType, itemType>::traverse(void visit(DictionaryNode<keyType, itemType> &))
 {
+	DictionaryNode<keyType, itemType> * nodeptr = nullptr;
+	nodeptr = dictionary[0];
+
+	int total = 0;
+	double average = 0;
 	for(int i = 0; i < this->dictionarySize; i++)
 	{
-		if(this->dictionary[i] != nullptr)
+		if(dictionary[i] != nullptr)
 		{
-			visit(dictionary[i]->getItem());
+			nodeptr = dictionary[i];
+			std::cout << "Slot #" << i; visit(*nodeptr);
+			total += (int)nodeptr->getKey();
+
+			while(nodeptr->getNext() != nullptr)
+			{
+				nodeptr = nodeptr->getNext();
+				std::cout << "Slot #" << i; visit(*nodeptr);
+				total += (int)nodeptr->getKey();
+			}
 		}
 	}
+
+	average = (double)total/this->getNumberOfItems();
+	double x = (double)dictionarySize;
+	double alpha = (double)(this->getNumberOfItems()/x);
+
+
+	std::cout << "\n\n Average Age = " << average << "\n\n" << "alpha = " << alpha << "\n\n";
+
 }
 
 #endif
