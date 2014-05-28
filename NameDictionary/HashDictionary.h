@@ -19,16 +19,15 @@ private:
     int dictionarySize; // max size of the dictionary slots, you can have more elements than this but they will nessearily have to be chained
     
 	DictionaryNode<keyType, itemType> ** dictionary;               // our dictionary, an array of pointers to dictionary nodes. The array slots are the
-                                                                    // slots of our dictionary, and the pointers will point to the next item in the list if
-                                                                    // there is a collision between entries
+                                                                   // slots of our dictionary, and the pointers will point to the next item in the list if
+                                                                   // there is a collision between entries
 
     int numberOfEntries;    // current number of entries in our dictionary
     int hashEntry(keyType); // Hash utility function, takes a key and maps it via std::hash<int> to an index between {0, dictionarySize}
 
 public:
 
-    // constructor, ideally would have one argument, the size of the dictionary, but was getting
-    // errors involving the copy constructor. works for now but it needs to be fixed
+    // constructor, takes one argument that determines the number of slots of the dictionary
      HashDictionary(int); 
 
 	 // Destructor, must delete the dynamically allocated hash map memory.
