@@ -17,9 +17,11 @@
 template <class keyType, class itemType>
 HashDictionary<keyType, itemType>::HashDictionary(int size)
 {
-    this->dictionarySize = size;
-    this->numberOfEntries = 0;
-    this->dictionary = new DictionaryNode<keyType, itemType>*[dictionarySize];
+    this->dictionarySize = size;  // user determined dictionary size
+    this->numberOfEntries = 0;    // current number of entries
+    this->dictionary = new DictionaryNode<keyType, itemType>*[dictionarySize]; // dictionary is a double pointer, doing this makes it into an array of 
+                                                                               // DictionaryNode pointers, which themselves can link to a chain of other D.N. pointers
+    // intiailize the pointers to null
     for(int i = 0; i < dictionarySize; i++)
     {
         this->dictionary[i] = nullptr;
@@ -31,6 +33,7 @@ HashDictionary<keyType, itemType>::HashDictionary(int size)
 template <class keyType, class itemType>
 HashDictionary<keyType, itemType>::~HashDictionary()
 {
+    //TODO : examine this, we might actually need to go through each chain of pointers and individually delete them all.
     delete [] dictionary;
 }
 
@@ -61,25 +64,26 @@ int HashDictionary<keyType, itemType>::getNumberOfItems()
 template <class keyType, class itemType>
 bool HashDictionary<keyType, itemType>::add(keyType key, itemType item)
 {
+    // Node to be inserted into the dictionary
     DictionaryNode<keyType, itemType> * newNode = new DictionaryNode<keyType, itemType>(key, item);
-    DictionaryNode<keyType, itemType> * ptr;
-    int index = hashEntry(newNode->getKey());
+    DictionaryNode<keyType, itemType> * ptr;    // pointer used to traverse the map if a collision occurs
+    int index = hashEntry(newNode->getKey());   // get the hash value of the key
 
-    ptr = this->dictionary[index];
+    ptr = this->dictionary[index]; // jump to the slot in the map at the indexed hash key
 
-    if(ptr == nullptr)
+    if(ptr == nullptr) // if the slot is empty, there is no collision
     {
-        dictionary[index] = newNode;
-        this->numberOfEntries++;
+        dictionary[index] = newNode; // insert the node
+        this->numberOfEntries++;     
         return true;
     }
-    else
+    else                // else there is a collision 
     {
-        while(ptr->getNext() != nullptr)
+        while(ptr->getNext() != nullptr)  // we traverse the linked chain of nodes until we find an empty spot
         {
-            ptr = ptr->getNext();
+            ptr = ptr->getNext(); 
         }
-        ptr->setNext(newNode);
+        ptr->setNext(newNode); // we have found the last node in the chain, set this chain to point to the new node
         this->numberOfEntries++;
     }
 
@@ -93,8 +97,8 @@ template <class keyType, class itemType>
 int HashDictionary<keyType, itemType>::hashEntry(keyType key)
 {
     std::hash<keyType> hash_fn;
-    std::size_t str_hash = hash_fn(key);
-    str_hash = str_hash%this->dictionarySize;
+    std::size_t str_hash = hash_fn(key);      //hash the key
+    str_hash = str_hash%this->dictionarySize; // normalize key to our dictionary size by using modulus 
 
     return str_hash;
 }
@@ -105,29 +109,29 @@ int HashDictionary<keyType, itemType>::hashEntry(keyType key)
 template <class keyType, class itemType>
 bool  HashDictionary<keyType, itemType>::remove(keyType key)
 {
-    int index = hashEntry(key);
-    DictionaryNode<keyType, itemType> * nodeptr = nullptr;
-    nodeptr = dictionary[index];
+    int index = hashEntry(key);                            // find the index we should look for the key
+    DictionaryNode<keyType, itemType> * nodeptr = nullptr; // pointer to traverse a chain if needed
+    nodeptr = dictionary[index];                           // set pointer to slot
 
-    if(nodeptr == nullptr)
+    if(nodeptr == nullptr)  // if this space is empty, the item cannot be in the dictionary
         return false;
-    else if(key == nodeptr->getKey())
+    else if(key == nodeptr->getKey()) // if the space is non-empty and the key matches then we found the item to delete
     {
-        dictionary[index] = dictionary[index]->getNext();
+        dictionary[index] = dictionary[index]->getNext(); // set the pointer to point to the next one in the chain, if there are none it will just point to null 
         this->numberOfEntries--;
         return true;
     }
-    else
+    else  // else we have to check the rest of the chain
     {
-        while(nodeptr->getNext() != nullptr)
+        while(nodeptr->getNext() != nullptr) // while we haven't hit the end of the chain
         {
-            if(nodeptr->getNext()->getKey() == key)
+            if(nodeptr->getNext()->getKey() == key) // if the next node in the chain is the node we are looking for
             {
-                nodeptr = nodeptr->getNext()->getNext();
+                nodeptr->setNext(nodeptr->getNext()->getNext());  // set the current node to point around the next node, deleting the pointer from the map
                 this->numberOfEntries--;
                 return true;
             }
-            nodeptr = nodeptr->getNext();
+            nodeptr = nodeptr->getNext(); // go to the next node in the chain
         }
         return false;
     }
@@ -156,7 +160,8 @@ bool HashDictionary<keyType, itemType>::contains(keyType key)
         if(nodeptr->getKey() == key)
             return true;
 
-        nodeptr = nodeptr->getNext();
+        //nodeptr = nodeptr->getNext();
+        nodeptr = nodeptr->getNext();  // <-- so I discovered you could do this today
     }
 
     return false;

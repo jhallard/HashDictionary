@@ -1,3 +1,7 @@
+/*
+*    @Author
+*/
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -21,7 +25,7 @@ bool DictionaryToFile(std::vector<DictionaryNode<keyType, itemType>> vec, string
 
 int main()
 {
-    HashDictionary<int, string> dict(53);
+    HashDictionary<int, string> dict(13);
 
     enum OPTIONS {QUIT, PRINT, RETRIEVE, DELETE, READ, ADD, SAVE};
     int menuop = -1;

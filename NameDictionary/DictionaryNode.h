@@ -32,6 +32,7 @@ public:
 
     // get a pointer to the next item in the chain. Returns nullptr if there is no next pointer
     DictionaryNode<keyType, itemType> * getNext();
+
     //set the next pointer in the chain
     void setNext(DictionaryNode<keyType, itemType> *);
 
