@@ -5,22 +5,22 @@ template <class keyType, class itemType>
 class DictionaryNode
 {
 private:
-	keyType key;
-	itemType item;
-	DictionaryNode<keyType, itemType> * next;
+    keyType key;
+    itemType item;
+    DictionaryNode<keyType, itemType> * next;
 
 public:
-	DictionaryNode(keyType, itemType);
-	DictionaryNode();
+    DictionaryNode(keyType, itemType);
+    DictionaryNode();
 
-	void setKey(keyType);
-	keyType getKey();
+    void setKey(keyType);
+    keyType getKey();
 
-	void setItem(itemType);
-	itemType getItem();
+    void setItem(itemType);
+    itemType getItem();
 
-	DictionaryNode<keyType, itemType> * getNext();
-	void setNext(DictionaryNode<keyType, itemType> *);
+    DictionaryNode<keyType, itemType> * getNext();
+    void setNext(DictionaryNode<keyType, itemType> *);
 
 };
 
