@@ -227,4 +227,30 @@ void HashDictionary<keyType, itemType>::traverse(void visit(DictionaryNode<keyTy
 
 }
 
+template <class keyType, class itemType>
+std::vector<DictionaryNode<keyType, itemType>> HashDictionary<keyType, itemType>::toVector()
+{
+	DictionaryNode<keyType, itemType> * nodeptr = nullptr;
+	std::vector<DictionaryNode<keyType, itemType>> returnVector;
+
+    nodeptr = dictionary[0];
+
+    for(int i = 0; i < this->dictionarySize; i++)
+    {
+        if(dictionary[i] != nullptr)
+        {
+            nodeptr = dictionary[i];
+			returnVector.push_back(*nodeptr);
+
+            while(nodeptr->getNext() != nullptr)
+            {
+                nodeptr = nodeptr->getNext();
+				returnVector.push_back(*nodeptr);
+            }
+        }// end if
+    }// end forloop
+
+	return returnVector;
+}
+
 #endif

@@ -15,10 +15,15 @@ void visit(DictionaryNode<keyType, itemType> & name);
 template <class keyType, class itemType>
 bool fileToDictionary(HashDictionary<keyType, itemType> &, string filename);
 
+template <class keyType, class itemType>
+bool DictionaryToFile(std::vector<DictionaryNode<keyType, itemType>> vec, string filename);
+
+
 int main()
 {
     HashDictionary<int, string> dict(53);
 
+	enum OPTIONS {QUIT, PRINT, RETRIEVE, DELETE, READ, ADD, SAVE};
     int menuop = -1;
 
     while(menuop != 0)
@@ -39,7 +44,7 @@ int main()
 		cin.ignore();
         switch(menuop)
         {
-            case(1):
+            case(PRINT):
                 system("cls");
                 void (*fptr)(DictionaryNode<int, string> &);
                 fptr = visit;
@@ -48,7 +53,7 @@ int main()
                 system("cls");
             break;
 
-            case(2):
+            case(RETRIEVE):
                 cout << "Please enter the key to the item you want to retrieve\n";
                 cin >> key;
 
@@ -64,7 +69,7 @@ int main()
             break;
 
 
-            case(3):
+            case(DELETE):
                 cout << "Please enter the key to the item you want to delete\n";
                 cin >> key;
                 if(dict.remove(key))
@@ -78,7 +83,7 @@ int main()
             break;
 
 
-            case(4):
+            case(READ):
                 cout << "Please enter the name of the file to read from\n";
                 cin >> name;
 				if(fileToDictionary(dict, name))
@@ -90,7 +95,7 @@ int main()
 				system("cls");
             break;
 
-			case(5):
+			case(ADD):
                 cout << "Please enter the name to add to the dictionary\n";
                 getline(cin,name);
 				cout << "Please enter the age that corresponds to that person\n";
@@ -102,6 +107,20 @@ int main()
 				system("pause");
 				system("cls");
             break;
+
+
+			case(SAVE):
+				std::vector<DictionaryNode<int, std::string>> entries = dict.toVector();
+				cout << "Please enter the name of the file to save to\n";
+                cin >> name;
+				if(DictionaryToFile(dict.toVector(), name))
+					cout << "\n\n File Successfully Saved\n\n";
+				else
+					cout << "\n\n Could not save file\n\n";
+
+				system("pause");
+				system("cls");
+			break;
         }// end switch
 
     }// end main menu while loop
@@ -153,6 +172,26 @@ bool fileToDictionary(HashDictionary<keyType, itemType>  &dic, string filename)
 
 }
 
+template <class keyType, class itemType>
+bool DictionaryToFile(std::vector<DictionaryNode<keyType, itemType>> vec, string filename)
+{
+	 ofstream outfile;
+
+	try
+	{
+        outfile.open(filename);
+	}
+	catch(exception e)
+	{
+	    return false;
+	}
+
+	/*for(int i = 0; i < vec.size(); i++)
+	{
+		outfile << vec[i].getKey() << " " << vec[i].getItem() << "\n";
+	}*/
+	
+}
 
 template <class keyType, class itemType>
 void visit(DictionaryNode<keyType, itemType> & name)

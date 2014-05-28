@@ -25,6 +25,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4997A02-12B2-4B46-81AF-84A59E151E92}</ProjectGuid>
     <RootNamespace>NameDictionary</RootNamespace>
+    <ProjectName>HashDictionary</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

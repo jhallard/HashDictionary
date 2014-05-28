@@ -64,6 +64,11 @@ public:
     void traverse(void visit(DictionaryNode<keyType, itemType>&));
 
 
+	//returns a vector of the entries of the dictionary in order based on their key. If the keys map the the same index through std::Hash, then they will be 
+	// in relative order of how they were inserted.
+	std::vector<DictionaryNode<keyType, itemType>> toVector();
+
+
 };
 
 #include "HashDictionary.cpp"
